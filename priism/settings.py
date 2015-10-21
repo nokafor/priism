@@ -102,7 +102,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# —— Heroku / Postgres ——
+# Heroku Database Info
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
