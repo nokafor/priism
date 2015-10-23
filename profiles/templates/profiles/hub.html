@@ -135,7 +135,11 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-preview">
+                    	{% if admin and not company.conflicts_due %}
+                        <a data-toggle="modal" href="{% url 'profiles:updateDueDate' company.name member.username 'conflicts' %}" data-target="#conflict_due_modal">
+                        {% else %}
                         <a href="{% url 'profiles:members' company.name member.username %}">
+                        {% endif %}
                             <h2 class="post-title">
                                 Members / Conflicts
                             </h2>
@@ -164,7 +168,11 @@
                     </div>
                     <hr>
                     <div class="post-preview">
+                    	{% if admin and not company.casting_due %}
+                    	<a data-toggle="modal" href="{% url 'profiles:updateDueDate' company.name member.username 'casting' %}" data-target="#casting_due_modal">
+                    	{% else %}
                         <a href="{% url 'profiles:casts' company.name member.username %}">
+                        {% endif %}
                             <h2 class="post-title">
                                 Casting
                             </h2>
