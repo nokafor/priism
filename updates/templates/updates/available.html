@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{ rehearsal }}</h4>
+        </div>
+        <div id="display-modal-body" class="modal-body">
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            {% if rehearsal.getCasts %}
+                <ul>
+                    {% for cast in rehearsal.getCasts %}
+                        <li>{{ cast.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p><strong>There are no casts available for this rehearsal.</strong></p>
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>

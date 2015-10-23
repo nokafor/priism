@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="{{dismiss}}" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{header}}</h4>
+        </div>
+        <div id="form-modal-body" class="modal-body">
+            <form class="form-horizontal" action="{% url 'updates:updateName' company.name member.username %}" method="post">
+                {% csrf_token %}
+                {{ form|bootstrap_horizontal }}
+                <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="{{dismiss}}">Close</button>
+        </div>

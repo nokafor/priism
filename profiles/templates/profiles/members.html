@@ -1,0 +1,231 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Members/Conflicts</title>
+    
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'profiles/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/flex.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ company.name }}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'profiles:profile' company.name member.username %}">Hub</a>
+                    </li>
+                    <li>
+                        <a href="logout/">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url({% static 'profiles/img/members-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Members and Conflicts</h1>
+                        <h2 class="subheading">View / manage the members of {{ company.name }}. {% if admin %} Admins can also view the conflicts of individual members. {% endif %}</h2>
+                        <span class="meta">
+                        {% if admin %}
+                            {% if not company.conflicts_past_due %}
+                                Changes to conflicts allowed until {{ company.conflicts_due }}
+                            {% else %}
+                                Return to your hub to set a new due date for conflicts.
+                            {% endif %}
+                        {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <!-- Add Members -->
+    {% if admin %}
+    <section>
+        <div class="container" style="text-align:center;">
+            <a data-toggle="modal" href="{% url 'profiles:addUsers' company.name member.username %}" data-target="#addmember" class="btn btn-lg btn-default" style="text-decoration:none">Add Members</a>
+        </div>
+    </section>
+    <!-- Add Member Modal -->
+    <div class="modal fade" id="addmember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div> 
+    
+    <br>
+    {% endif %}
+
+    <!-- List of Members -->
+    <section style="width:100%">
+        <div class="container" style="width:100%">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="section-heading">Current Members</h2>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                {% if member_list %}
+                    {% for mem in member_list %}
+                        <div class="col-md-3 col-sm-4 col-xs-12 portfolio-item">
+                            <div class="portfolio-caption flexbox members" style="justify-content:space-between; -webkit-justify-content:space-between;">
+                                {% ifequal mem.id member.id %}
+                                    <a href="{% url 'profiles:conflicts' company.name member.username %}"><h4>{{ mem }}</h4></a>
+                                {% else %}
+                                    {% if admin %}
+                                        <a data-toggle="popover" title="{{mem.first_name}}'s Conflicts" data-content="{% for conflict in mem.conflict_set.all %} {{conflict.day_of_week}}: {{conflict.start_time}} - {{conflict.end_time}} <br> {% empty %} None {% endfor %}" data-placement="bottom" style="cursor:pointer"><h4>{{ mem }}</h4></a>
+                                        <div class="flexbox">
+                                            <a onclick="return confirm('Are you sure you want to make {{ mem }} an admin?')" href="{% url 'updates:addAdmin' company.name member.username mem.id %}"><span class="fa fa-plus-circle" style="margin-left:5px"></span></a>
+                                            <a onclick="return confirm('Are you sure you want to remove {{ mem }} from {{company.name}}?')"href="{% url 'updates:deleteMember' company.name member.username mem.id %}"><span class="fa fa-minus-circle" style="margin-left:5px"></span></a>
+                                        </div>
+                                    {% else %}
+                                        <h4>{{ mem }}</h4>
+                                    {% endif %}
+                                {% endifequal %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No members have been added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <br>
+    <br>
+
+    <!-- List of Admins -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="section-heading">Current Admins</h2>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                {% if admin_list %}
+                    {% for admin in admin_list %}
+                        <div class="col-md-3 col-sm-4 col-xs-6  portfolio-item">
+                            {% ifequal admin.member member%}
+                                <div class="portfolio-caption flexbox center admins">
+                                    <h4> {{ member }}</h4>
+                                    <a onclick="return confirm('Are you sure you want to remove your {{company.name}} admin access?')"href="{% url 'updates:deleteAdmin' company.name member.username %}"><span class="fa fa-minus-circle" style="margin-left:5px"></span></a>
+                                </div>
+                            {% else %}
+                                <div class="portfolio-caption flexbox center admins">
+                                    <h4>{{ admin.member }}</h4>
+                                </div>
+                            {% endifequal %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No admins have been added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <br>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">Copyright &copy; Princeton University</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Pop Overs -->
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({html:true}); 
+
+        var max = 0;
+        $('.members').each(function() {
+            if ($(this).height() > max) {
+                max = $(this).height();
+            }
+        });
+
+        $('.members').css('height', max);
+
+        max = 0;
+
+        $('.admins').each(function() {
+            if ($(this).height() > max) {
+                max = $(this).height();
+            }
+        });
+
+        $('.admins').css('height', max);
+    });
+    </script>
+</body>
+</html>

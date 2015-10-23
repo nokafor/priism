@@ -1,0 +1,261 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Conflicts</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'profiles/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/flex.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+
+    <!-- Google API Dependencies -->
+    <script type="text/javascript">
+        // Your Client ID can be retrieved from your project in the Google
+        // Developer Console, https://console.developers.google.com
+        var CLIENT_ID = '{{founder.client_id}}';
+
+        var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+        /**
+        * Check if current user has authorized this application.
+        */
+        function checkAuth() {
+        gapi.auth.authorize(
+          {
+            'client_id': CLIENT_ID,
+            'scope': SCOPES,
+            'immediate': false
+          }, handleAuthResult);
+        }
+
+    </script>
+    <script src="{% static 'profiles/js/conflicts.js' %}"></script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+
+    <!-- Calendar Dependencies -->
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.css' />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'profiles/js/moment.min.js' %}"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.js'></script>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                defaultView: 'agendaWeek',
+                allDaySlot: false,
+                columnFormat : {
+                    month: 'ddd',
+                    week: 'ddd',
+                    day: 'ddd'
+                },
+                slotEventOverlap: true,
+                events: [ 
+                {% for conflict in member.conflict_set.all %}
+                {
+                    title : "{{ conflict.description }}",
+                    start : moment("{{ conflict.start_time|date:'g:i a' }}", "hh:mm a").day("{{conflict.day_of_week}}"),
+                    end   : moment("{{ conflict.end_time|date:'g:i a' }}", "hh:mm a").day("{{conflict.end_day}}"),
+                    allDay: false
+                },
+                {% endfor %}
+                {
+                    title : 'Today',
+                    start : moment(new Date()),
+                    allDay: true
+                }
+                ]
+            });
+            $('.fc-toolbar').remove();
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ company.name }}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'profiles:profile' company.name member.username %}">Hub</a>
+                    </li>
+                    <li>
+                        <a href="logout/">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url({% static 'profiles/img/conflicts-bg-2.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Conflicts</h1>
+                        <h2 class="subheading">View and edit your conflicts for the current semester</h2>
+                        <span class="meta">{% if company.conflicts_past_due %}No more changes allowed to conflicts {% else %}Changes allowed until {{company.conflicts_due}} {% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Calendar of Events -->
+    <!-- <div id="cal" style="width:90%; height: 500px; border:1px solid black; margin:0 auto;text-align:center;">Calendar</div> -->
+    <div class="container center" style="margin-bottom:3%">
+        <a id="toggleCal" style="cursor:pointer; padding:2%; text-decoration:none">Show/Hide Calendar</a>
+    </div>
+    <div id="calendar"></div>
+
+    {% if not company.conflicts_past_due %}
+    <div class="container">
+        <div class="flexbox fluid" style="margin:5% auto;">
+            <div class="box center flexbox" style="padding-right:7%; flex-direction: column; -webkit-flex-direction:column;">
+                <div id="authorize-div">
+                    <button class="btn btn-default" id="authorize-button" onclick="handleAuthClick(event, '{{founder.client_id}}')">Import from Google</button>
+                </div>
+                <!-- <pre id="output"></pre> -->
+                <div id="calendars" style="display:none">
+                    <h5>Import from Google Calendars</h5>
+                </div>
+                <div id="output" style="display:none">
+                    <h5>Upcoming Events in Google Calendar</h5>
+                </div>
+            </div>
+            <div class="flexbox fluid box-divider" style="flex-direction: column; -webkit-flex-direction:column;">
+                <div class="box-divider-line">&nbsp;</div>   
+                <h3>OR</h3>
+                <div class="box-divider-line">&nbsp;</div>   
+            </div>
+            <div class="box center flexbox" style="padding-left:7%;flex-direction: column; -webkit-flex-direction:column;">
+                <form action="{% url 'updates:addConflicts' company.name member.username %}" method="post" style="width:90%;">
+                {% csrf_token %}
+                    <h5>Upload Your Conflicts Manually</h5>
+                    <p style="font-size:70%; padding:0; margin:0; padding-top:2%">Follow the format depicted below to enter your conflicts manually.</p>
+                    <div class="form-group" style="margin:5% auto">
+                        <textarea name="conflicts" class="form-control" rows="3" placeholder="Work Friday 10:00PM 12:30AM"></textarea>
+                    </div>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div id="authorize-div" style="display: none">
+      <span>Authorize access to Google Calendar API</span>
+      Button for the user to click to initiate auth sequence 
+      <button id="authorize-button" onclick="handleAuthClick(event)">
+        Authorize
+      </button>
+    </div> -->
+    <!-- <pre id="output"></pre> -->
+    <!-- View Conflicts -->
+    <br>
+    <hr>
+    {% endif %}
+    <br>
+
+    <div class="container" style="text-align:center">
+            <div class="row">
+                <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" style="margin:0"> -->
+                    <!-- <h2 class="section-heading">Saved Conflicts</h2> -->
+                    <!-- <hr> -->
+                    {% if conflict_list %}
+                    <ul style="list-style:none; padding:0" style="">
+                        {% for item in conflict_list %}
+                            <li style="width:100%"><h3>{{ item.0 }}</h3></li>
+                            <ul style="list-style:none; padding:0">
+                                {% for conflict in item.1 %}
+                                <li style="width:100%"><div class="flexbox" style="">
+                                    <p style="margin:0;">{{ conflict.description }}: {{conflict.start_time}} - {{conflict.end_time}}</p>
+                                    {% if not company.conflicts_past_due %}
+                                    <div style="margin-left:5%"><a data-toggle="modal" href="{% url 'updates:updateConflict' company.name member.username conflict.id %}" data-target="#{{ conflict.id }}-modal"><span class="fa fa-pencil-square-o"></span></a></div> |
+                                    <div><a href="{% url 'updates:deleteConflict' company.name member.username conflict.id %}" onclick="return confirm('Are you sure you want to delete the following conflict: {{conflict}}')"><span class="fa fa-minus-circle"></span></a></div> 
+
+                                    <div class="modal fade" id="{{ conflict.id }}-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            </div>
+                                        </div>
+                                    </div>  
+                                    {% endif %} 
+                                </div></li>
+                                {% endfor %}
+                            </ul>
+                            <br>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <blockquote>You have not added any conflicts yet.</blockquote>
+                    {% endif %}
+                <!-- </div> -->
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <p class="copyright text-muted">Copyright &copy; Princeton University</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+
+    <script>
+        $('#toggleCal').click(function() {
+            $('#calendar').toggleClass('hidden');
+        })
+    </script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</body>
+</html>

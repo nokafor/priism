@@ -1,0 +1,86 @@
+.flexbox {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items:center;
+    align-items: center;
+}
+
+.center {
+	text-align: center;
+}
+
+.center-margin {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.modal-font-size {
+	font-size: 70%;
+}
+
+.box {
+	width:50%;
+	height:250px; 
+	overflow:auto;
+}
+
+.box-login {
+    height: 80%;
+}
+
+.login-box {
+    flex-direction:column; 
+    -webkit-flex-direction: column; 
+    width:56%; 
+    height:300px; 
+    padding-left: 5%; 
+    padding-right: 6%;
+}
+
+.login-button {
+    width: 44%;
+}
+
+.fluid-text {
+    display: none;
+}
+
+.box-divider-line {
+    width: 1px; 
+    height: 100px; 
+    background-color: #ccc;
+}
+
+@media(max-width:600px) {
+    .fluid {
+        flex-direction:column;
+        -webkit-flex-direction:column;
+    }
+
+    .fluid-text {
+        display: block;
+    }
+
+    .box-divider-line {
+        display:none;
+    }
+    .box-divider {
+        flex-direction:row;
+        -webkit-flex-direction:row;
+        /*border: 1px solid red;*/
+    }
+
+    .box-login {
+        height: auto;
+    }
+
+    .box, .login-button {
+        width: 100%;
+        /*margin: 5% 0;*/
+        height:auto;
+        padding: 5%;
+        /*border: 1px solid blue;*/
+    }
+}

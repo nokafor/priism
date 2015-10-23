@@ -1,0 +1,204 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Settings</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'profiles/css/simple-sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/flex.css' %}" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'companies/js/jqBootstrapValidation.js' %}"></script>
+
+
+</head>
+
+<body>
+    <script>
+        $(function () { $("input").not("[type=submit]").jqBootstrapValidation(); } );
+    </script>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+        {% if member.first_name %}
+            <ul class="sidebar-nav">
+                <li style="text-indent:0">
+                    <a href="{% url 'profiles:profile' company.name member.username %}" style="text-align:center; margin: 5% auto;">
+                        <span class="fa fa-arrow-circle-o-left fa-5x" style="width:100%"></span>
+                    </a>
+                </li>
+                <li>
+                    <a id="getGeneral" href="#">General Settings</a>
+                </li>
+                {% if admin %}
+                <li>
+                    <a id="getReminders" href="#">Reminders</a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="logout/">Logout</a>
+                </li>
+            </ul>
+        {% endif %}
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        {% if not member.first_name %}
+        <script>
+            window.alert("Please enter your name before continuing");
+        </script>
+        {% endif %}
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <!-- General Settings -->
+                <div class="row" id="general">
+                    <div class="col-lg-12">
+                        <div class="flexbox" style="justify-content:flex-start; -webkit-justify-content:flex-start; align-items:baseline; -webkit-align-items:baseline;"><h1 style="margin-right:10px">General Settings</h1> <a href="#menu-toggle" id="menu-toggle">Toggle Menu</a></div>
+                        <br>
+                        <!-- <i style="border:1px solid blue; color:red" class="fa fa-arrow-circle-o-right"></i> -->
+                        <h4>Companies You Are In</h4>
+                        <ul>
+                        {% for group in member.groups.all %}
+                            <li>{{ group }}</li>
+                        {% endfor %}
+                        </ul>
+                        <br>
+                        <h4 style="margin-top:5%">Personal Info</h4>
+                        <form action="{% url 'updates:updateSettings' company.name member.username %}" method="post">
+                            {% csrf_token %}
+                            {{personal_form|bootstrap}}
+                            <!-- <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" placeholder="{{ member.first_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" placeholder="{{ member.last_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="{{ member.email }}">
+                            </div> -->
+                            {% if member.has_usable_password %}
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old Password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Change Password</label>
+                                <input type="password" class="form-control" name="new_password" id="new_password" placeholder="Enter New Password">
+                                <input type="password" class="form-control" name="new_password_2" id="new_password_2" placeholder="Enter New Password Again"  data-validation-matches-match="new_password" data-validation-matches-message="Must match password entered above.">
+                                <!-- <p class="help-block text-danger"></p> -->
+                            </div>
+                            {% endif %}
+                            <input type="hidden" name="form_type" value="personal">
+                            <button type="submit" class="btn btn-default">Save Changes</button>
+                        </form>
+                        <br>
+                        {% if admin %}
+                        <h4 style="margin-top:5%">Company Info</h4>
+                        <form action="{% url 'updates:updateSettings' company.name member.username %}" method="post">
+                            {% csrf_token %}
+                            {{company_form|bootstrap}}
+                            <!-- <div class="form-group">
+                                <label for="company-name">Company Name</label>
+                                <input type="text" class="form-control" id="company-name" placeholder="{{ company.name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="company-listserv">Company Listserv Email</label>
+                                <input type="email" class="form-control" id="company-listserv" placeholder="{{ company.listserv|default:'None' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="company-short_description">Company Short Description</label>
+                                <textarea class="form-control" name="company-short_description" id="company-short_description" rows="3" placeholder="{{ company.short_description }}"></textarea>
+                            </div> -->
+                            <input type="hidden" name="form_type" value="company">
+                            <button type="submit" class="btn btn-default">Save Changes</button>
+                            <!-- <h4>Stuff to add</h4> -->
+                            <!-- <p>Company reminders</p> -->
+                        </form>
+                        <br>
+                        {% endif %}
+                        <!-- <h4>Choreographer Settings</h4> -->
+                        <br>
+                    </div>
+                </div>
+
+                <!-- Reminder Settings -->
+                <div class="row hidden" id="reminders">
+                    <div class="col-lg-12">
+                        <div class="flexbox" style="justify-content:flex-start; -webkit-justify-content:flex-start; align-items:baseline; -webkit-align-items:baseline;"><h1 style="margin-right:10px">Reminders</h1> <a href="#menu-toggle" id="menu-toggle-2">Toggle Menu</a></div>
+                        <br>
+                        <h4>[[ Coming Soon ]]</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    $("#menu-toggle-2").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    $("#getGeneral").click(function(e) {
+        e.preventDefault();
+        $("#general").removeClass("hidden");
+        $("#reminders").addClass("hidden");
+    });
+
+    $("#getReminders").click(function(e) {
+        e.preventDefault();
+        $("#general").addClass("hidden");
+        $("#reminders").removeClass("hidden");
+    });
+    </script>
+
+</body>
+
+</html>

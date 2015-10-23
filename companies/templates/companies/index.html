@@ -1,0 +1,312 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Home</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'companies/css/agency.css' %}" rel="stylesheet">
+    <link href="{% static 'companies/css/custom.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top" style="font-family:Prism;">PRIISM</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#portfolio">Company Login</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li>
+                        <a class="page-scroll" href="logout/">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a class="page-scroll" href="signup/">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welcome to PRIISM!</div>
+                <div class="intro-heading">Scheduling Made Easy</div>
+                <!-- <a href="#services" class="page-scroll btn btn-xl">Learn More</a> -->
+                <a href="#services" class="page-scroll btn btn-xl" style="background-color:transparent; color:#FFA534;">Learn More</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- <div class="content-wrapper"> -->
+            <!-- About Section -->
+            <section id="services">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h2 class="section-heading">PRIISM</h2>
+                            <h3 class="section-subheading text-muted">Princeton Instant Scheduling Machine</h3>
+                        </div>
+                    </div>
+                    <div class="row text-center" style="width:90%; margin: 0 auto">
+                        <!-- <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
+                        </span> -->
+                        <!-- <h4 class="service-heading">By Dancers</h4> -->
+                        <p class="text-muted">PRIISM is an online scheduling tool that allows artistic directors to easily manage the rehearsals for their respective companies. It was created, by artistic directors, for other artistic directors, to alleviate the hassles of scheduling by hand. Currently, the site is protected via Princeton CAS rendering it useful only to Princeton organizations and students. However, it is in the process of being expanded for use by any organization.</p>
+
+                        <!-- <br>
+                        <br>
+                        <br> -->
+                        <h4 style="padding-top:10%">How It Works?</h4>
+                        <br>
+
+                        <p class="text-muted">PRIISM digitalizes the collection of conflicts and other relevant information for dance companies (e.g. rehearsal times and places, company members, etc). Once added to the system, members can input their conflict information. Then, using the collected information and a matching algorithm, admins for each company can use PRIISM to automatically create schedules that optimize attendance based on the given constraints.</p>
+                        <!-- <div class="col-md-4">
+                            <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h4 class="service-heading">For Dancers</h4>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        </div> -->
+                        <!-- <div class="col-md-4">
+                            <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h4 class="service-heading">By Dancers</h4>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        </div> -->
+                        <!-- <div class="col-md-4">
+                            <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h4 class="service-heading">Of Dancers</h4>
+                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        </div> -->
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Portfolio Grid Section -->
+            <section id="portfolio" class="bg-light-gray">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h2 class="section-heading">Company Login</h2>
+                            <h3 class="section-subheading text-muted">Find your company.</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% if group_list %}
+                            {% for group in group_list %}
+                                <div class="col-md-4 col-sm-6 portfolio-item">
+                                {% if request.user.is_authenticated and group in user.groups.all %}
+                                <a href="{% url 'companies:detail' group.name %}" class="portfolio-link">
+                                        <div class="portfolio-hover">
+                                            <div class="portfolio-hover-content">
+                                                <i class="fa fa-sign-in fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <img src="{{group.company.logo.url}}" class="portfolio-image img-responsive" alt="Logo for {{group.name}}">
+                                    </a>
+                                {% else %}
+                                <a data-toggle="modal" href="{% url 'companies:modal' group.name %}" data-target="#modal-{{group.id}}" class="portfolio-link">
+                                        <div class="portfolio-hover">
+                                            <div class="portfolio-hover-content">
+                                                <i class="fa fa-sign-in fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <img src="{{group.company.logo.url}}" class="portfolio-image img-responsive" alt="Logo for {{group.name}}">
+                                    </a>
+                                {% endif %}
+                                    <div class="portfolio-divider"><hr style="margin: 0 auto; width:75%"></div>
+                                    <div class="portfolio-caption">
+                                        <h4>{{ group.name }}</h4>
+                                        <p class="text-muted">{{ group.company.short_description }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal-{{group.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:1051;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No companies have been added yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            
+            <!--- banner -->
+            <div class="jumbotron banner">
+                <h1>Don't See Your Company?</h1>
+                <p>Contact us via the contact form below, and we will help get you on your way.</p>
+            </div>
+
+            <!-- contact section -->
+            <section id="contact">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h2 class="section-heading">Contact Us</h2>
+                            <h3 class="section-subheading text-muted">We welcome your feedback. Help us help you, by giving us feedback so we can make this site better!</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form name="sentMessage" id="contactForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Your Email *" id="email" required data-validation-required-message="Please enter your email address.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Your Organization *" id="organization" required data-validation-required-message="Please enter the organization you are associated with.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message." minlength="10"></textarea>
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12 text-center">
+                                        <div id="success"></div>
+                                        <input type="hidden" id="api_user" value="{{founder.api_user}}">
+                                        <input type="hidden" id="api_key" value="{{founder.api_key}}">
+                                        <input type="hidden" id="toEmail" value="{{founder.email}}">
+                                        <button type="submit" class="btn btn-xl">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="copyright">Copyright &copy; Princeton University</span>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="list-inline social-buttons">
+                                <li><a href="https://www.facebook.com/bballinsylvia15"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li><a href="mailto:nokafor@princeton.edu?Subject=PRIISM"><i class="fa fa-envelope"></i></a>
+                                </li>
+                                <li><a href="https://www.linkedin.com/pub/sylvia-okafor/99/9/a4"><i class="fa fa-linkedin"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="list-inline quicklinks">
+                                <li><a href="#">Privacy Policy</a>
+                                </li>
+                                <li><a href="#">Terms of Use</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    <!-- </div> -->
+    
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="{% static 'companies/js/classie.js' %}"></script>
+    <script src="{% static 'companies/js/cbpAnimatedHeader.js' %}"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{% static 'companies/js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'companies/js/contact_me.js' %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'companies/js/agency.js' %}"></script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{ mem }}</h4>
+        </div>
+        <div id="display-modal-body" class="modal-body">
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            {% if member.conflict_set.all %}
+                <ul>
+                    {% for conflict in member.conflict_set.all %}
+                        <li>{{ conflict.description }}: {{conflict.start_time}} - {{conflict.end_time}} ({{conflict.day_of_week}})</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p><strong>No conflicts have been added yet.</strong></p>
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>

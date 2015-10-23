@@ -1,0 +1,302 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Profile</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'profiles/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/custom.css' %}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{% static 'profiles/css/bootstrap-datetimepicker.min.css' %}"> -->
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- DateTimePicker JavaScript 
+    <script src="{% static 'profiles/js/moment.min.js' %}"></script>
+    <script src="{% static 'profiles/js/bootstrap-datetimepicker.min.js' %}"></script> -->
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" style="">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ company.name }}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'profiles:conflicts' company.name member.username %}">Your Conflicts</a>
+                    </li>
+                    <li>
+                        <a href="logout/">Logout</a>
+                    </li>
+                    <li class="dropdown">
+                        <!-- <a data-toggle="modal" href="{% url 'updates:updateName' company.name member.username %}" data-target="#form-modal"><span class="fa fa-cog fa-lg"></span></a> -->
+                        <a href="{% url 'profiles:settings' company.name member.username %}"><span class="fa fa-cog fa-lg"></span></a>
+                        <!-- <ul class="dropdown-menu" style="background-color:transparent;">
+                            <li><a href="#">Edit Personal Info</a></li>
+                            <li><a href="#">Contact Admins</a></li>
+                            {% if admin %}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Edit Company Info</a></li>
+                            <li><a href="#">Company Reminders</a></li>
+                            <li><a href="#">Contact Company</a></li>
+                            {% endif %}
+                        </ul> -->
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header flexbox" style="background-image: url({% static 'profiles/img/home-bg-4.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Welcome, {{ member.first_name|default:"User" }}</h1>
+                        <hr class="small">
+                        <span class="subheading">This is the scheduling hub for your company</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>   
+
+    <!-- Modal for Updating Conflict Due Date -->
+    <div class="modal fade" id="conflict_due_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Updating Casting Due Date -->
+    <div class="modal fade" id="casting_due_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-preview">
+                        <a href="{% url 'profiles:members' company.name member.username %}">
+                            <h2 class="post-title">
+                                Members / Conflicts
+                            </h2>
+                            <h3 class="post-subtitle">
+                                View / manage the current members of {{ company.name }}
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                        {% if admin %} 
+                        <a data-toggle="modal" href="{% url 'profiles:updateDueDate' company.name member.username 'conflicts' %}" data-target="#conflict_due_modal">Change the date conflicts are due (currently set to: {{ company.conflicts_due |default:"none" }}).</a>
+                        {% else %}
+                        Current due date for conflicts: {{ company.conflicts_due |default:"none" }}
+                        {% endif %}
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="post-preview">
+                        <a href="{% url 'profiles:spaces' company.name member.username %}">
+                            <h2 class="post-title">
+                                Rehearsal Spaces
+                            </h2>
+                            <h3 class="post-subtitle">
+                                View / manage {{ company.name }} rehearsal spaces for the current semester
+                            </h3>
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="post-preview">
+                        <a href="{% url 'profiles:casts' company.name member.username %}">
+                            <h2 class="post-title">
+                                Casting
+                            </h2>
+                            <h3 class="post-subtitle">
+                                View / manage casting list for the upcoming show and/or performances
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                            {% if admin %} 
+                            <a data-toggle="modal" href="{% url 'profiles:updateDueDate' company.name member.username 'casting' %}" data-target="#casting_due_modal">Change the release date for casting (currently set to: {{ company.casting_due |default:"none" }}).</a>
+                            {% else %}
+                            Current release date for casting: {{ company.casting_due |default:"none" }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="post-preview">
+                        <a href="{% url 'profiles:scheduling' company.name member.username %}">
+                            <h2 class="post-title">
+                                Rehearsal Schedule
+                            </h2>
+                            <h3 class="post-subtitle">
+                                View / manage the rehearsal schedules for all pieces and/or performances
+                            </h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://www.facebook.com/bballinsylvia15">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:nokafor@princeton.edu?Subject=PRISM">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/pub/sylvia-okafor/99/9/a4">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="copyright text-muted">Copyright &copy; Princeton University</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            if ($(window).width() >= 768) {
+                var scroll_start = 0;
+                var startchange = $('.content-wrapper');
+                var offset = startchange.offset();
+                // var offset = 300;
+                 if (startchange.length){
+                $(document).scroll(function() { 
+                   scroll_start = $(this).scrollTop();
+                   if(scroll_start >= offset.top) {
+                       $(".navbar").css({
+                         'background-color': 'white',
+                         'border-bottom':'1px solid black',
+                         'box-shadow':'0px 0px 5px 0px rgba(0,0,0,.5)'
+                         });
+                       $(".nav li a").css('color', 'grey');
+                       $(".navbar-brand").css('color', 'grey');
+                       
+                       // $("#nav-item").each(function(){
+                       //   $(this).css('color', 'grey');
+                       // });
+
+                    } 
+                    else {
+                        // if ($(window).width() >= 768) {
+                            $('.navbar').css({
+                              'background-color': 'transparent',
+                              'border-bottom':'1px solid transparent',
+                              'box-shadow':'0px 0px 0px 0px rgba(0,0,0,.5)'
+                              });
+
+                            $(".nav li a").css('color', 'white');
+                            $(".navbar-brand").css('color', 'white');
+
+                            // $("#nav-item").each(function(){
+                            //   $(this).css('color', 'white');
+                            // });
+                        // }
+
+                    }
+                });
+                 }
+            } 
+            else {
+                $(".navbar").css({
+                  'background-color': 'white',
+                  'border-bottom':'1px solid black',
+                  'box-shadow':'0px 0px 5px 0px rgba(0,0,0,.5)'
+                  });
+                $(".nav li a").css('color', 'grey');
+                $(".navbar-brand").css('color', 'grey');
+            }      
+        });
+
+        // $("#set_conflict_due_date").click(function() {
+        //     $("#datetimepicker").toggleClass('hidden');
+        //     $("#set_conflict_due_date").toggleClass('hidden')
+        // });
+    </script>
+
+</body>
+
+</html>

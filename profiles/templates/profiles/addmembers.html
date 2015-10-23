@@ -1,0 +1,78 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<head>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="{% static 'profiles/css/addmembers.css' %}" rel="stylesheet">
+    <!-- <link href="http://twitter.github.io/typeahead.js/css/examples.css" rel="stylesheet"> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+
+     <!--<script src="//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>-->
+    <!--<script src="{% static 'profiles/js/typeahead.bundle.min.js' %}"></script>-->
+</head>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Add Members</h4> <!-- figure out the header -->
+</div>
+
+<div class="modal-body addmembers">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose an Upload Method
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li id="student" style="cursor:pointer; cursor:hand;"><h5>Users w/ Valid NetID</h5></li>
+        <li id="nonstudent" style="cursor:pointer; cursor:hand;"><h5>Users w/o Valid NetID</h5></li>
+      </ul>
+    </div>  
+
+    <!-- form for inputting people with valid netid -->
+    <div id="form1" class="form hidden addmembers">
+        <h5>Adding People w/ Valid NetID</h5>
+        <p>Use the text area below to add members (who have valid NetIDs) to your company. Each line should correspond to just one student and contain only a NetID/Princeton email, first name, and last name, in that order. If you have access to your organization's listserv, you can just copy and paste the output below (see instructions <a href="#">here</a>).</p>
+        <form action="{% url 'updates:addStudents' company_name member_name %}" method="post">
+        {% csrf_token %}
+            <textarea class="form-control" name="student_list" placeholder="janedoe Jane Doe" rows="5" cols="50"></textarea> 
+            <button type="submit" class="btn btn-primary" style="margin-top: 7px;">Add</button>
+        </form>
+    </div>  
+
+    <!-- form for inputting people without valid netid -->
+    <div id="form2" class="form hidden addmembers">
+        <h5>Adding People w/o Valid NetID</h5>
+        <p>The user you are trying to add must first create a PRISM account. Then, you may search for them below. <strong>Note: </strong>Once you click the add button, the user is added to your company and given login access to your organization's site.</p>
+        <!-- <input id="search" name="s" class="typeahead form-control tt-query tt-hint" autocomplete="off" type="text" placeholder="Jane Doe"> -->
+        <form action="{% url 'profiles:addUsers' company_name member_name %}" method="post" class="addmembers" style="flex-direction:row; -webkit-flex-direction:row;">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper" style="width:75%">
+                {{ form.users.errors }}
+                {{ form.users }}
+            </div>
+            <button type="submit" class="btn btn-primary" style="border-radius:5px; padding:0; margin:0; height:35px; margin-left:5px; width:35px;"><span class="fa fa-plus"></span></button>
+            {{ form.media }}
+        </form>
+    </div>  
+</div>
+
+    <!-- <input id="submit" class="btn btn-primary" type="submit" style="margin-bottom: 5%"> -->
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+<script>
+    $('#student').click(function() {
+        $('#form1').removeClass("hidden");
+        $('#form2').addClass("hidden");
+    });
+    $('#nonstudent').click(function() {
+        $('#form1').addClass("hidden");
+        $('#form2').removeClass("hidden");
+    })
+</script>
+
+
+
+

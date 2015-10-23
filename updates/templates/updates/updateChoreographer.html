@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{{ curr.cast.name }}</h4>
+        </div>
+        <div id="form-modal-body" class="modal-body">
+            <form class="form-horizontal" action="{% url redirect_name company.name member.netid curr.id %}" method="post">
+                {% csrf_token %}
+                {{ form|bootstrap_horizontal }}
+                <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'updates:deleteChoreographer' company.name member.netid curr.id %}" class="btn btn-primary">Delete</a>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>

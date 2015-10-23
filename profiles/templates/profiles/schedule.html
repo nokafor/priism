@@ -1,0 +1,293 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Sylvia Okafor">
+
+    <title>Scheduling</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href="http://faviconist.com/icons/de3e284ee55ce978c399cd74f2eab5df/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'profiles/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/flex.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Form Validation -->
+    <script src="{% static 'companies/js/jqBootstrapValidation.js' %}"></script>
+    <!-- // <script src="{% static 'profiles/js/scheduling.js' %}"></script> -->
+
+</head>
+
+<body>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ company.name }}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'profiles:profile' company.name member.username %}">Hub</a>
+                    </li>
+                    <li>
+                        <a id="logout" href="logout/">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url({% static 'profiles/img/scheduling-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Rehearsal Schedule</h1>
+                        <h2 class="subheading">{% if admin %}Manage{% else %}View{% endif %} the rehearsal schedules for all pieces and/or performances</h2>
+                        <!-- <span class="meta">Posted March 5, 2015</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="automatic">
+        <div class="container center">
+            <form action="{% url 'profiles:confirmSchedule' company.name member.username %}" method="post" id="scheduleForm">
+            {% csrf_token %}
+                <h2 style="margin-top:5%">Rehearsal Spaces</h2>
+                {% if admin %}
+                <p style="font-size:70%; padding:0; margin:0">Select one or more {{company.name}} rehearsal space(s) to schedule. (Click the name of the rehearsal space to see casts available during that time.)</p>
+                <div class="flexbox">
+                    <h5 style="font-weight:normal; margin-right:2%; cursor:pointer;"><a id="allRehearsals">Select All</a></h5> <h5 style="font-weight:normal; cursor:pointer;"><a id="noRehearsals">Deselect All</a></h5>
+                </div>
+                {% endif %}
+                <hr>
+                <div class="row" style="text-align:left">
+                    {% if rehearsal_list %}
+                        {% for rehearsal in rehearsal_list %}
+                            <div class="col-md-4 col-sm-6 portfolio-item">
+                                {% if admin %}
+                                <div class="checkbox rehearsalDiv">
+                                    <label>
+                                        <input type="checkbox" name="rehearsals" class="rehearsal" value="{{rehearsal.id}}"> <a data-toggle="popover" title="Casts Available During this Rehearsal Time" data-content="{% for cast in rehearsal.getAllCasts %} {{cast}} <br> {% empty %} None {% endfor %}" data-placement="bottom">{{ rehearsal.place }}: {{rehearsal.start_time}} - {{rehearsal.end_time}} ({{rehearsal.day_of_week}})</a>
+                                    </label>
+                                </div>
+                                {% else %}
+                                <div class="rehearsalDiv" style="margin:2%"><a data-toggle="popover" title="Casts Available During this Rehearsal Time" data-content="{% for cast in rehearsal.getAllCasts %} {{cast}} <br> {% empty %} None {% endfor %}" data-placement="bottom" style="cursor:pointer;">{{ rehearsal.place }}: {{rehearsal.start_time}} - {{rehearsal.end_time}} ({{rehearsal.day_of_week}})</a></div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <!-- <label class="checkbox"><input type="checkbox" name="rehearsals" class="hidden" ></label> -->
+                    {% else %}
+                        <p>No rehearsals have been added yet.</p>
+                    {% endif %}
+                </div>
+                <h2 style="margin-top:5%">Casting List</h2>
+                {% if admin %}
+                <p style="font-size:70%; padding:0; margin:0">Select one or more {{company.name}} cast(s) to schedule. (Click the cast name to see rehearsals that all cast members can attend.)</p>
+                <div class="flexbox">
+                    <h5 style="font-weight:normal; margin-right:2%; cursor:pointer;"><a id="allCasts">Select All</a></h5> <h5 style="font-weight:normal; cursor:pointer;"><a id="noCasts">Deselect All</a></h5>
+                </div>
+                {% endif %}
+                <hr>
+                <div class="row" style="text-align:left">
+                    {% if cast_list %}
+                            <!-- {% csrf_token %} -->
+                            {% for cast in cast_list %}
+                                <div class="col-md-3 col-sm-4 col-xs-12 portfolio-item">
+                                    {% if admin %}
+                                    <div class="checkbox castDiv">
+                                        <label style="">
+                                            <input type="checkbox" name="casts" class="cast" value="{{cast.id}}"> <a data-toggle="popover" title="Rehearsal Times that Work for This Cast" data-content="{% for rehearsal in cast.getAllRehearsals %} {{rehearsal.day_of_week}}: {{rehearsal.start_time}} - {{rehearsal.end_time}} <br> {% empty %} None {% endfor %}" data-placement="bottom">{{ cast.name }}</a>
+                                        </label>
+                                    </div>
+                                    {% else %}
+                                    <div class="castDiv" style="margin:2%"><a data-toggle="popover" title="Rehearsal Times that Work for This Cast" data-content="{% for rehearsal in cast.getAllRehearsals %} {{rehearsal.day_of_week}}: {{rehearsal.start_time}} - {{rehearsal.end_time}} <br> {% empty %} None {% endfor %}" data-placement="bottom" style="cursor:pointer;">{{ cast.name }}</a></div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <label class="checkbox"><input type="checkbox" name="casts" class="hidden"></label>
+                    {% else %}
+                        <p>No casts have been added yet.</p>
+                    {% endif %}
+                </div>
+                <!-- <a href="" data-toggle="modal" data-target="#schedule-modal"></a> -->
+                {% if admin %}
+                    <button type="submit" class="btn btn-lg btn-default" style="margin-top:5%">Schedule Rehearsal(s)</button>
+                {% endif %}
+            </form>
+        </div>
+    </section>
+
+
+    {% if company.has_schedule %}
+    <section style="margin-top:10%">
+        <div class="container center" style="width:100%; padding:0">
+            <h2>Current Weekly Rehearsal Schedule</h2> 
+            <hr>
+                {% for cast in cast_list %}
+                <div class="row" style="width:100%">
+                    {% if cast.is_scheduled %}
+                        <div style="padding:3%">
+                            <h3>{{cast}}</h3>
+                            <!-- <br> -->
+                            <strong>{{cast.rehearsal.day_of_week}}</strong>
+                            <br>
+                            {{cast.rehearsal.start_time}} - {{cast.rehearsal.end_time}}
+                            <br>
+                            ({{cast.rehearsal.place}})
+                            <br>
+                            <a href="#" style="font-size:70%" data-toggle="modal" data-target="#rehearsal-modal"> Add Another Rehearsal</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Add Another Rehearsal Modal -->
+                <div class="modal fade" id="rehearsal-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="text-align:left">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Add Rehearsal(s)</h4>
+                            </div>
+
+                            <div class="modal-body" style="padding:7%;">
+                                <div class="form">
+                                    <h5>Adding Rehearsal(s)</h5>
+                                    <p class="modal-font-size" style="font-size:70%">You may search for rehearsals below, but because PRIISM utilizes weekly schedules, you may not schedule another rehearsal for {{cast}} that is already scheduled for another cast this week.</p>
+                                    <form class="flexbox" action="" method="post">
+                                    {% csrf_token %}        
+                                        {{ form.non_field_errors }}
+                                        <div class="fieldWrapper" style="width:75%">
+                                            {{ form.rehearsals.errors }}
+                                            {{ form.rehearsals }}
+                                        </div>
+                                        <!-- {{form}} -->
+                                        <button type="submit" class="btn btn-primary" style="border-radius:5px; padding:0; margin:0; height:35px; margin-left:5px; width:35px;"><span class="fa fa-plus"></span></button>
+                                        {{ form.media }}
+                                    </form>
+                                </div>  
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                {% endfor%}
+            {% if admin %}
+            <div class="row center" style="width:100%">
+                <a href="{% url 'updates:deleteSchedule' company.name member.username %}" class="btn btn-lg btn-default">Delete Schedule</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">Copyright &copy; Princeton University</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Pop Overs -->
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({html:true}); 
+
+        $('#allRehearsals').click(function(e) {
+            $('.rehearsal').prop('checked', true);
+        });
+
+        $('#allCasts').click(function(e) {
+            $('.cast').prop('checked', true);
+        });
+
+        $('#noRehearsals').click(function(e) {
+            $('.rehearsal').prop('checked', false);
+        });
+
+        $('#noCasts').click(function(e) {
+            $('.cast').prop('checked', false);
+        });
+
+        var max = 0;
+        $('.castDiv').each(function() {
+            if ($(this).height() > max) {
+                max = $(this).height();
+            }
+        });
+
+        $('.castDiv').css('height', max);
+
+        max = 0;
+
+        $('.rehearsalDiv').each(function() {
+            if ($(this).height() > max) {
+                max = $(this).height();
+            }
+        });
+
+        $('.rehearsalDiv').css('height', max);
+
+
+        // $('.cast').each(function() {
+        //     alert('Height: '+ $(this).height());
+        // });
+    });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+@font-face { 
+    font-family: 'Prism'; 
+    src: url('../fonts/EvolutionTrueTypeFont.ttf');
+}
+
+html, body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+@media(max-width:375px) {
+    header .intro-text .intro-heading {
+        font-size: 30px;
+    }
+}
+
+header, section, footer, .container  {
+    width: 100%;
+}
+
+/*.container {
+    border:2px solid red;
+}
+
+.row {
+    border: 2px solid green;
+}*/
+.text-primary {
+    color: #FFA534;
+}
+
+a, section#services .section-heading, section#portfolio .section-heading {
+    color: #FF8F00;
+}
+
+a:hover,
+a:focus,
+a:active,
+a.active {
+    color: #FF8F00;
+}
+
+.btn-primary {
+    border-color: #FFA534;
+    background-color: #FFA534;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+    border-color: #FF8F00;
+    background-color: #FF8F00;
+}
+
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+    border-color: #FFA534;
+    background-color: #FFA534;
+}
+
+.btn-primary .badge {
+    color: #FFA534;
+}
+
+.btn-xl {
+    border-color: #FFA534;
+    background-color: #FFA534;
+}
+
+.btn-xl:hover,
+.btn-xl:focus,
+.btn-xl:active,
+.btn-xl.active,
+.open .dropdown-toggle.btn-xl {
+    border-color: #FF8F00;
+    background-color: #FF8F00;
+}
+
+.btn-xl.disabled,
+.btn-xl[disabled],
+fieldset[disabled] .btn-xl,
+.btn-xl.disabled:hover,
+.btn-xl[disabled]:hover,
+fieldset[disabled] .btn-xl:hover,
+.btn-xl.disabled:focus,
+.btn-xl[disabled]:focus,
+fieldset[disabled] .btn-xl:focus,
+.btn-xl.disabled:active,
+.btn-xl[disabled]:active,
+fieldset[disabled] .btn-xl:active,
+.btn-xl.disabled.active,
+.btn-xl[disabled].active,
+fieldset[disabled] .btn-xl.active {
+    border-color: #FFA534;
+    background-color: #FFA534;
+}
+
+
+.navbar-default .navbar-brand {
+    color: #FFA534;
+}
+
+.custom-font {
+    font-family: 'Prism';
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:active,
+.navbar-default .navbar-brand.active {
+    color: #FF8F00;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: #FFA534;
+    background-color: #FFA534;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: #FFA534;
+}
+
+.navbar-default .nav li a:hover,
+.navbar-default .nav li a:focus {
+    color: #FFA534;
+}
+
+.navbar-default .navbar-nav>.active>a {
+    background-color: #FFA534;
+}
+
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
+    background-color: #FF8F00;
+}
+
+header .intro-text .intro-lead-in {
+    color: #FFA534;
+}
+
+#portfolio .portfolio-item .portfolio-link .portfolio-hover {
+    background: rgba(255,165,52,.9);
+}
+
+.portfolio-divider {
+    background: white;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.portfolio-item {
+    height: 400px;
+    /*width: 400px;*/
+    margin-bottom: 15px;
+    /*border: 5px solid blue;*/
+}
+
+.portfolio-item a {
+    height: 250px;
+    background: white;
+    overflow: hidden;
+    /*border-bottom: 1px solid grey;*/
+}
+
+.portfolio-item img {
+    height: 100%;
+    width: 100%;
+}
+
+section#contact .form-control:focus {
+    border-color: #FFA534;
+ }
+
+
+ul.social-buttons li a:hover,
+ul.social-buttons li a:focus,
+ul.social-buttons li a:active {
+    background-color: #FFA534;
+}
+
+.banner {
+    text-align: center;
+    margin: 0;
+    background-color: white;
+    color: #FFA534;
+    padding-left: 2%;
+}
+
+a.banner-link:hover,
+a.banner-link:focus,
+a.banner-link:active {
+    text-decoration: none;
+}
+
+.banner p {
+    color: #a0a0a0;
+}
+
+::-moz-selection {
+    background: #FFA534;
+}
+
+::selection {
+    background: #FFA534;
+}
+
+body {
+    webkit-tap-highlight-color: #FFA534;
+}

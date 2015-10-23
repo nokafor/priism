@@ -1,0 +1,105 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Home</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'companies/css/agency.css' %}" rel="stylesheet">
+    <link href="{% static 'companies/css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'profiles/css/flex.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'companies/js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'companies/js/form.js' %}"></script>
+
+</head>
+
+<body>
+    <script>
+        $(function () { $("input").not("[type=submit]").jqBootstrapValidation(); } );
+    </script>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Choose a sign in option</h4> <!-- figure out the header -->
+    </div>
+
+    <div class="modal-body flexbox fluid" style="margin:5% auto;">
+        <!-- box on the left -->
+        <div class="box login-button" style="height:100px;">
+            <div class="flexbox" style="height:100%; width:100%;">
+                <a href="{% url 'companies:detail' company_name %}" class="btn btn-warning btn-lg" style="margin: 0 auto;">Sign in with NetID</a>
+            </div>
+        </div>  
+        
+        <div class="box-divider-line" style="height: 250px;">&nbsp;</div>  
+        <h3 class="fluid-text" style="padding-bottom: 5%">OR</h3> 
+
+        <!-- box on the right -->           
+        <div class="flexbox box login-box">
+            <div class="box-login" style="width: 100%">
+                <div class="flexbox" style="justify-content: space-between; -webkit-justify-content: space-between; align-items: baseline; -webkit-align-items: baseline;">
+                    <h4>Sign In</h4>
+                    <a href="{% url 'companies:signup' %}" class="signin-muted text-muted">or create an account</a>
+                </div>
+                <form id="form" method="post" action="{% url 'companies:login' company_name %}">
+                {% csrf_token %}
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="email" required data-validation-required-message="Please enter your email address.">
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="loginPwd" id="loginPwd" required data-validation-required-message="Please enter your password.">
+                        <p class="help-block text-danger"></p>
+                    </div>
+
+                    <div class="flexbox" style="justify-content: space-between; -webkit-justify-content: space-between; align-items: baseline; -webkit-align-items: baseline;">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">Remember Me
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-default">Sign in</button>
+                    </div>
+                </form>
+                
+                <br>
+
+                <a href="#" class="text-muted">Forgot your password?</a>
+
+            </div>
+        </div> 
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</body>
+
+
+

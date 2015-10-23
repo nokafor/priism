@@ -1,0 +1,36 @@
+{% load staticfiles %}
+{% load bootstrap %}
+
+<head>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <script src="{% static 'profiles/js/moment.min.js' %}"></script>
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+    <script src="{% static 'profiles/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'profiles/css/bootstrap-datetimepicker.min.css' %}">
+</head>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Conflicts Due Date</h4>
+    </div>
+    <div id="form-modal-body" class="modal-body">
+        <form class="form-inline" action="{% url 'profiles:updateDueDate' company_name member_name option %}" method="post" style="text-align:center">
+        {% csrf_token %}
+                <div class="form-group">
+                    <input type='text' class="form-control" id='datetimepicker4' name="datetimepicker4">
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker4').datetimepicker();
+                        $('#datetimepicker4').data("DateTimePicker").minDate(new Date());
+                    });
+                </script>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" style="padding:0; margin:0; height: 35px; width:35px; border-radius: 5px;"><span class="fa fa-check"></span></button>
+                </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
