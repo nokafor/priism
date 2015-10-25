@@ -99,7 +99,7 @@
         </div>
     </header>
 
-    {% if company.casting_past_due %}
+    {% if admin or company.casting_past_due %}
     <!-- List of Current Casts -->
     <section>
         <div class="container">
@@ -121,7 +121,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p>No casts have been added yet.</p>
+                    <p class="center">No casts have been added yet.</p>
                 {% endif %}
             </div>
         </div>
