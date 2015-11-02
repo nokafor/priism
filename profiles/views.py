@@ -119,17 +119,12 @@ def testing(request, company_name, member_name, date_string):
             #
             description = request.POST['description']
             day_of_week = request.POST['dow']
-
-            start = request.POST['startOptions'].split(", ")[2].replace(".", "")
-            if ':' not in start:
-                start = start.replace(" ", ":00 ")
+            
+            start = request.POST['startOptions'].replace(".", "")
             start_time = datetime.strptime(start, "%I:%M %p")
             # print start, start_time
 
-            end = request.POST['endOptions'].split(", ")[2].replace(".", "")
-            if ':' not in end:
-                end = end.replace(" ", ":00 ")
-            
+            end = request.POST['endOptions'].replace(".", "")
             end_time = datetime.strptime(end, "%I:%M %p")
 
             conflict = Conflict(member=member, description=description, day_of_week=day_of_week, start_time=start_time.time(), end_time=end_time.time())

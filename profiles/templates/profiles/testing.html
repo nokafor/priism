@@ -76,7 +76,7 @@
 				<h5>Start Time</h5>
 				<div class="radio">
 				  <label>
-				    <input type="radio" name="startOptions" id="startOptions1" value="{{start_time1}}" checked>
+				    <input type="radio" name="startOptions" id="startOptions1" value="{{start_time| date:'g:i a'}}" checked>
 				    {{start_time.time}}
 				  </label>
 				</div>
@@ -84,7 +84,7 @@
 				<h5>End Time</h5>
 				<div class="radio">
 				  <label>
-				    <input type="radio" name="endOptions" id="endOptions1" value="{{end_time1}}" checked>
+				    <input type="radio" name="endOptions" id="endOptions1" value="{{end_time| date:'g:i a'}}" checked>
 				    {{end_time.time}}
 				  </label>
 				</div>
