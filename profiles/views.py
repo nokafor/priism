@@ -70,15 +70,18 @@ def parsePAC(request, company_name, member_name):
                     time = entry['title']['$t'].encode('utf-8').strip()
 
                     for name in format:
-                        result = getRowValue(row, format, name)
-                        # print "%s, %s:%s" % (time, name, result)
+                        result = getRowValue(row, format, name).decode('utf-8')
+                        print "%s, %s:%s" % (time, name, result)
                         # print result
                         # print result, last_company[name]
                         if result != last_company[name][0]:
                             index = last_company[name][1]
                             if index != -1:
                                 t = time.split('-')[0]
-                                end = datetime.strptime(t, "%I:%M%p")
+                                try:
+                                    end = datetime.strptime(t, "%I:%M%p")
+                                except:
+                                    end = datetime.strptime("1:00am", "%I:%M%p")
                                 rehearsals[index].end_time = end.time()
                                 last_company[name][1] = -1
                                 # print 'add end time to rehearsal in %s' % name
