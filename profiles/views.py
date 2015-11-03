@@ -27,7 +27,15 @@ def settings(request, company_name, member_name):
 
         personal_form = PersonalForm(instance=member)
         company_form = CompanyForm(instance=company)
-        return render(request, 'profiles/settings.html', {'company': company, 'member':member, 'admin':admin, 'choreographer':choreographer, 'personal_form':personal_form, 'company_form':company_form})
+        
+        # check to see if user just updated settings
+        try:
+            saved = request.GET['saved']
+        except:
+            saved = None
+        print saved
+        
+        return render(request, 'profiles/settings.html', {'company': company, 'member':member, 'admin':admin, 'choreographer':choreographer, 'personal_form':personal_form, 'company_form':company_form, 'saved':saved})
     else:
         return redirect('profiles:profile', company_name, member_name,)
 

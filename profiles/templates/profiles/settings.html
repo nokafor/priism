@@ -76,6 +76,12 @@
             window.alert("Please enter your name before continuing");
         </script>
         {% endif %}
+        
+        {% if saved %}
+        <script>
+            window.alert("Information has been saved and reflected accordingly in the form below.");
+        </script>
+        {% endif %}
 
         <!-- Page Content -->
         <div id="page-content-wrapper">

@@ -1,6 +1,7 @@
 # from django.core.files import File
 
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 
@@ -57,8 +58,11 @@ def updateSettings(request, company_name, member_name):
             if form.is_valid():
                 form.save()
 
-        
-    return redirect('profiles:settings', company_name, member_name,)
+    response = redirect('profiles:settings', company_name, member_name,)
+    response['Location'] += "?saved=True"
+    return response
+#     return redirect(reverse('profiles:settings', kwargs={'saved':'True'}) + '#')
+#     return redirect('profiles:settings', company_name, member_name,)['Location'] += "?saved=True"
 
 def addCast(request, company_name, member_name):
     admin = adminAuth(request, company_name, member_name)
