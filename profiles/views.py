@@ -79,7 +79,7 @@ def parsePAC(request, company_name, member_name):
 
                     for name in format:
                         result = getRowValue(row, format, name).decode('utf-8')
-                        print "%s, %s:%s" % (time, name, result)
+#                         print "%s, %s:%s" % (time, name, result)
                         # print result
                         # print result, last_company[name]
                         if result != last_company[name][0]:
